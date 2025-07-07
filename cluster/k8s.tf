@@ -248,7 +248,7 @@ resource "kubernetes_deployment" "kube_state_metrics" {
         dns_config {
           options {
             name  = "ndots"
-            value = "2"
+            value = var.dns_config_options.ndots
           }
         }
 

@@ -115,3 +115,12 @@ variable "kube_image_pull_secrets" {
   type    = list(string)
   default = []
 }
+
+variable "dns_config_options" {
+  type = object({
+    ndots = optional(number)
+  })
+  default = {
+    ndots = 2
+  }
+}
