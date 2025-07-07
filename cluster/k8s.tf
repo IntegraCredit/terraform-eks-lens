@@ -393,9 +393,8 @@ resource "kubernetes_config_map" "doit_collector_config" {
   }
 
   data = {
-    "collector.yaml" = "${templatefile(
-      "${path.module}/collector-config.yaml",
-      {
+    "collector.yaml" = templatefile(
+      "${path.module}/collector-config.yaml", {
         doit_metrics_deployment_id = var.cluster.deployment_id
         collector_bucket_name      = local.s3_bucket
         collector_bucket_prefix    = "eks-metrics/${local.account_id}/${local.region}/${var.cluster.name}"
@@ -404,7 +403,7 @@ resource "kubernetes_config_map" "doit_collector_config" {
         limit_percentage           = var.otel_memory_limiter.limit_percentage
         spike_limit_percentage     = var.otel_memory_limiter.spike_limit_percentage
       }
-    )}"
+    )
   }
 }
 
@@ -583,6 +582,12 @@ resource "kubernetes_deployment" "collector" {
 
         node_selector = try(var.otel_node_selector, null)
 
+        dns_config {
+          option {
+            name  = "ndots"
+            value = var.dns_config_options.ndots
+          }
+        }
       }
     }
   }
