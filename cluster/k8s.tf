@@ -245,6 +245,13 @@ resource "kubernetes_deployment" "kube_state_metrics" {
 
         node_selector = try(var.kube_state_node_selector, null)
 
+        dns_config {
+          options {
+            name  = "ndots"
+            value = "2"
+          }
+        }
+
       }
     }
   }
